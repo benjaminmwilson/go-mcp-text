@@ -14,11 +14,18 @@ func main() {
 	var sourceDir string
 	var port string
 	var useStdio bool
+	var showHelp bool
 
 	flag.StringVar(&sourceDir, "source", ".", "Directory to serve text files from")
 	flag.StringVar(&port, "port", "8080", "Port to listen on")
 	flag.BoolVar(&useStdio, "stdio", false, "Run as a stdio MCP server instead of HTTP/SSE")
+	flag.BoolVar(&showHelp, "help", false, "Help")
 	flag.Parse()
+
+	if showHelp {
+		help()
+		os.Exit(0)
+	}
 
 	// Resolve to absolute path and validate.
 	absDir, err := filepath.Abs(sourceDir)
@@ -32,8 +39,8 @@ func main() {
 	sourceDir = absDir
 
 	s := server.NewMCPServer(
-		"file-reader",
-		"1.0.0",
+		mcpServerName,
+		version,
 		server.WithToolCapabilities(true),
 		server.WithResourceCapabilities(true, false),
 	)
