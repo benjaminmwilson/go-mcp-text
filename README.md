@@ -169,6 +169,19 @@ make vet
 make clean
 ```
 
+---
+
+## Quick Test
+
+This command sends the MCP handshake (`initialize` and `initialized`) and then lists the tools the MCP server offers. It needs `jq` to pretty print the results:
+
+```bash
+{ echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"0"}}}'; \
+echo '{"jsonrpc":"2.0","method":"notifications/initialized","params":{}}'; \
+echo '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'; } \
+| ./go-mcp-text --stdio | jq .
+```
+
 
 ---
 
